@@ -1,12 +1,13 @@
 import * as actionType from './actionTypes'
-export function userLoggedIn(Name, Email, uid, DPurl) {
+export function userLoggedIn(Name, Email, uid, DPurl,roomId) {
     return {
         type: actionType.LoggedIn,
         payload: {
-            Name: Name,
-            Email: Email,
-            uid: uid,
-            DPurl: DPurl,
+            Name,
+            Email,
+            uid,
+            DPurl,
+            roomId,
            
         }
     }

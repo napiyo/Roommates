@@ -7,15 +7,17 @@ import store from './Redux/store'
 import { StyleSheet, Text, View } from 'react-native';
 import AuthScreen from './Screens/AuthScreens/AuthScreen'
 import CheckingRoom from './Screens/CheckingRoom';
+import Home from './Screens/Home';
 
 export default function App() {
   const MainStackNavigation =createNativeStackNavigator()
   return (
     <Provider store={store}>
     <NavigationContainer>
-      <MainStackNavigation.Navigator>
+      <MainStackNavigation.Navigator initialRouteName="AuthScreens">
         <MainStackNavigation.Screen name="AuthScreens"  component={AuthScreen} options={{headerShown:false}}/>
         <MainStackNavigation.Screen name="CheckForRoom"  component={CheckingRoom} options={{headerShown:false}}/>
+        <MainStackNavigation.Screen name="Home"  component={Home} options={{headerShown:false}}/>
       </MainStackNavigation.Navigator>
     </NavigationContainer>
     </Provider>

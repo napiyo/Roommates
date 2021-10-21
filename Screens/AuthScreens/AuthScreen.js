@@ -38,6 +38,7 @@ export function LoginScreen({navigation}){
          // when user login it  listen too. and it redirect to home page too. so home page entry animation animates twice
          
         auth.onAuthStateChanged((user)=>{
+            
             if(user){
                 // user is already signed in
                 //update redux store
@@ -48,20 +49,31 @@ export function LoginScreen({navigation}){
                     docRef.get().then((doc)=>{
         // successfully got user data
                   let userInfo=  doc.data()
-
-                  dispatch(actions.userLoggedIn(userInfo.Name,userInfo.Email,uid,userInfo.profileDp))
-                  // navigate to home
-                  navigation.dispatch(
-                   StackActions.replace('CheckForRoom')
-                 );
+                  
+                  dispatch(actions.userLoggedIn(userInfo.Name,userInfo.Email,uid,userInfo.profileDp,userInfo.roomId))
+                  if(userInfo.roomId==null){
+                  
+                      // navigate to checkRoom
+                      navigation.dispatch(
+                       StackActions.replace('CheckForRoom')
+                     );
+                  }
+                  else{
+                       // navigate to Home // already in a room
+              
+                       navigation.dispatch(
+                        StackActions.replace('Home')
+                      );
+                  }
                 //  navigation.navigate('HomeScreen');
                 }).catch((e)=>{
                    // failed to get data
                    setSnackbarState({visible:true,message:"Couldn't get your data --"+e.message})
                 //  Alert.alert("something  Went wrong", "restart your app, beacuse we could not get your data from server")
-                 Alert.alert("something  Went wrong", e.message)
+                 Alert.alert("something Went wrong ", e.message)
+                
     })
-              
+    setshowLoader(false)
  
             }
             else{
@@ -76,29 +88,43 @@ export function LoginScreen({navigation}){
    
      const Login=()=>{
         auth.signInWithEmailAndPassword(Email, Password).then((credential)=>{
-            const user= credential.user;
-                  //update redux store
-                // get user data first 
-                const uid = user.uid;
-                // firebase userdata ref
-                var docRef = db.collection("userPersonalData").doc(uid);
-                    docRef.get().then((doc)=>{
-        // successfully got user data
-                  let userInfo=  doc.data()
-                      
-                  dispatch(actions.userLoggedIn(userInfo.Name,userInfo.Email,uid,userInfo.profileDp))
-                  // navigate to home
-                  navigation.dispatch(
-                   StackActions.replace('HomeScreen')
-                 );
-                //  navigation.navigate('HomeScreen');
-                }).catch((e)=>{
-                   // failed to get data
-                   setSnackbarState({visible:true,message:"Couldn't get your data --"+e.message})
-                 Alert.alert("something  Went wrong", "restart your app, beacuse we could not get your data from server")
-    })
 
-            setshowLoader(false)
+///Already have onAuthchange function so when user login it will be code navigation will be handle by onAuthchange no need to write here too
+// this was issue , this was causing home screen entry twice , onAuth and this Login both navigated
+
+    //         const user= credential.user;
+    //               //update redux store
+    //             // get user data first 
+    //             const uid = user.uid;
+    //             // firebase userdata ref
+    //             var docRef = db.collection("userPersonalData").doc(uid);
+    //                 docRef.get().then((doc)=>{
+    //     // successfully got user data
+    //               let userInfo=  doc.data()
+                      
+    //               dispatch(actions.userLoggedIn(userInfo.Name,userInfo.Email,uid,userInfo.profileDp,userInfo.roomId))
+    //               // navigate to home
+    //               if(userInfo.roomId==null){
+                      
+    //                 // navigate to checkRoom
+    //                 navigation.dispatch(
+    //                  StackActions.replace('CheckForRoom')
+    //                );
+    //             }
+    //             else{
+    //                  // navigate to Home // already in a room
+    //                  navigation.dispatch(
+    //                   StackActions.replace('Home')
+    //                 );
+    //             }
+    //             //  navigation.navigate('HomeScreen');
+    //             }).catch((e)=>{
+    //                // failed to get data
+    //                setSnackbarState({visible:true,message:"Couldn't get your data --"+e.message})
+    //              Alert.alert("something  Went wrong", "restart your app, beacuse we could not get your data from server")
+    // })
+
+    //         setshowLoader(false)
            
          
         }).catch((e)=>{

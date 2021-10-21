@@ -71,17 +71,17 @@ let openImagePickerAsync = async () => {
       
   }
   const UploadData =(url,uid)=>{
-      db.collection("userPersonalData").doc(uid).set({Name,Email,profileDp:url}).then(()=>{
+      db.collection("userPersonalData").doc(uid).set({Name,Email,profileDp:url,roomId:null}).then(()=>{
           // data uploaded successfully
           setshowLoader(false)
-          dispatch(actions.userLoggedIn(Name,Email,uid,url))
-          setSnackbarState({visible:true,message:"Welcome "+Name})
+          dispatch(actions.userLoggedIn(Name,Email,uid,url,null))
+         
       }).catch((error)=>{
           // created account , uploaded Image (if any) , but coudln't save its data
           setshowLoader(false)
           setSnackbarState({visible:true,message:"unable to upload your data"})
       })
-      // moving to home Screen and removing auth screens from stack navigation so user cant go back to auth screens after login
+      // moving to checkRoom Screen and removing auth screens from stack navigation so user cant go back to auth screens after login
       navigation.dispatch(
         StackActions.replace('CheckForRoom')
       );
