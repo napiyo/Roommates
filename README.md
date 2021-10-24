@@ -1,5 +1,6 @@
 # Roommates
 task distribution and schedule between roommates
+> React Native , Firebase , Redux , material UI
 
 # work in progress
 <div style="display:flex,">
