@@ -675,16 +675,26 @@ const [submitbtnloading, setsubmitbtnloading] = useState(false)
               <Chip mode='flat'
              style={{margin:5}}
              onClose={()=>{
-                 setselectedFriends(selectedFriends.splice(key-1,1))
+                let restselectedfriendstemp = selectedFriends.filter(()=>true);
+                      restselectedfriendstemp.splice(key-1,1)
+                        setselectedFriends(restselectedfriendstemp)
              }}
              
              >Group {key}</Chip>
             {
             group.map((friend)=>{
                     return <Chip mode='outlined' key={friend.key}
-                    // onClose={()=>{
-                    //         setselectedFriends(set)
-                    // }}
+                    onClose={()=>{
+                          let restselectedfriendstemp = selectedFriends.filter(()=>true);
+                          restselectedfriendstemp.splice(key-1,1)
+                          let indexOfFriendinThisGroup = group.indexOf(friend);
+                          group.splice(indexOfFriendinThisGroup,1);
+                          if(group.length != 0){
+
+                              restselectedfriendstemp.splice(key-1,0,group);
+                          }
+                            setselectedFriends(restselectedfriendstemp)
+                    }}
                     style={{margin:5,backgroundColor:chipscolor[key-1]}}
                     
                     >
